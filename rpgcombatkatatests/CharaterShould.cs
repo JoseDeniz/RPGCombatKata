@@ -1,5 +1,6 @@
 using FluentAssertions;
 using NUnit.Framework;
+using rpgcombatkata;
 
 namespace rpgcombatkatatests {
     [TestFixture]
@@ -8,10 +9,12 @@ namespace rpgcombatkatatests {
         public void Setup() { }
 
         [Test]
-        public void Test1() {
-            var a = false;
+        public void be_alive_with_level_one_and_1000_points_of_health() {
+            var character = Character.Create();
 
-            a.Should().BeFalse();
+            character.IsAlive.Should().BeTrue();
+            character.Level.Should().Be(1);
+            character.Health.Should().Be(1000);
         }
     }
 }
