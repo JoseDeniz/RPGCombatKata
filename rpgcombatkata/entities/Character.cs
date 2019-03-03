@@ -18,7 +18,9 @@ namespace rpgcombatkata.entities {
         }
 
         private void HandleAttack(AttackCharacter attackCharacterEvent) {
-            Health -= attackCharacterEvent.Points;
+            if (attackCharacterEvent.CharacterId == Id) {
+                Health -= attackCharacterEvent.Points;
+            }
         }
 
         public static Character Create() {

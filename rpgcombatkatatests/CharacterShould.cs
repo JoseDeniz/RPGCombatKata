@@ -28,5 +28,14 @@ namespace rpgcombatkatatests {
             character.IsAlive.Should().BeTrue();
             character.Health.Should().Be(900);
         }
+        
+        [Test]
+        public void receive_damage_that_reduces_its_health_only_if_has_same_id() {
+            EventBus.Raise(new AttackCharacter(characterId: 123, points: 100));
+            EventBus.Raise(new AttackCharacter(character.Id, points: 100));
+            
+            character.IsAlive.Should().BeTrue();
+            character.Health.Should().Be(900);
+        }
     }
 }
