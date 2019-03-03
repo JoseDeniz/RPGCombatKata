@@ -9,7 +9,7 @@ namespace rpgcombatkatatests {
         public void Setup() { }
 
         [Test]
-        public void be_alive_with_level_one_and_1000_points_of_health() {
+        public void be_alive_with_level_one_and_1000_points_of_health_when_is_created() {
             var character = Character.Create();
 
             character.IsAlive.Should().BeTrue();
