@@ -78,17 +78,16 @@ namespace rpgcombatkatatests {
         }
         
         [Test]
-        public void can_only_receive_health_from_itself() {
-            EventBus.Raise(WhenAttackCharacter(character2, character1, points: 900));
-            EventBus.Raise(new HealCharacter(character1.Id, character1.Id, points: 100));
-            EventBus.Raise(new HealCharacter(character2.Id, character1.Id, points: 100));
+        public void can_receive_health_from_itself() {
+            EventBus.Raise(WhenAttackCharacter(character1, character2, points: 900));
+            EventBus.Raise(WhenHealingCharacter(character2, character2, points: 100));
             
-            character1.Health.Should().Be(200);
+            character2.Health.Should().Be(200);
         }
         
         [Test]
-        public void can_only_receive_health_from_itself_not_over_1000() {
-            EventBus.Raise(new HealCharacter(character1.Id, character1.Id, points: 100));
+        public void can_receive_health_from_itself_not_over_1000() {
+            EventBus.Raise(WhenHealingCharacter(character1, character1, points: 10000));
             
             character1.Health.Should().Be(1000);
         }
@@ -96,7 +95,7 @@ namespace rpgcombatkatatests {
         [Test]
         public void can_not_receive_health_when_is_death() {
             EventBus.Raise(WhenAttackCharacter(character1, character2, 1000));
-            EventBus.Raise(new HealCharacter(character1.Id, character2.Id, points: 100));
+            EventBus.Raise(WhenHealingCharacter(character1, character2, points: 100));
             
             character2.Health.Should().Be(0);
             character2.IsAlive.Should().BeFalse();
@@ -138,8 +137,25 @@ namespace rpgcombatkatatests {
             character2.Health.Should().Be(1000);
         }
         
+        [Test]
+        public void allies_of_a_faction_can_heal_each_others() {
+            var otherCharacter = RangedFighter.Create();
+            var faction = new AFaction();
+            character1.Join(faction);
+            character2.Join(faction);
+            
+            EventBus.Raise(WhenAttackCharacter(otherCharacter, character2, 900));
+            EventBus.Raise(WhenHealingCharacter(character1, character2, 100));
+
+            character2.Health.Should().Be(200);
+        }
+        
         private static AttackCharacter WhenAttackCharacter(Character sourceCharacter, Character targetCharacter, int points, int range = 1) {
             return new AttackCharacter(sourceCharacter, targetCharacter, points, range);
+        }
+        
+        private static HealCharacter WhenHealingCharacter(Character sourceCharacter, Character targetCharacter, int points) {
+            return new HealCharacter(sourceCharacter, targetCharacter, points);
         }
 
         private class ACharacter : Character {
