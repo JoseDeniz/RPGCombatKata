@@ -149,9 +149,22 @@ namespace rpgcombatkatatests {
 
             character2.Health.Should().Be(200);
         }
+
+        [Test]
+        public void can_damage_a_thing() {
+            var tree = new Tree(health: 2000);
+            
+            EventBus.Raise(WhenAttackObject(character1, tree, 500));
+
+            tree.Health.Should().Be(1500);
+        }
         
         private static AttackCharacter WhenAttackCharacter(Character sourceCharacter, Character targetCharacter, int points, int range = 1) {
             return new AttackCharacter(sourceCharacter, targetCharacter, points, range);
+        }
+        
+        private static AttackObject WhenAttackObject(Character sourceCharacter, AttackableObject attackableObject, int points) {
+            return new AttackObject(sourceCharacter, attackableObject, points);
         }
         
         private static HealCharacter WhenHealingCharacter(Character sourceCharacter, Character targetCharacter, int points) {
