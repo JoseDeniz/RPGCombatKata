@@ -19,10 +19,9 @@ namespace rpgcombatkata.entities {
         }
 
         private void HandleAttack(AttackCharacter attackCharacterEvent) {
-            if (attackCharacterEvent.CharacterId == Id) {
-                Health -= attackCharacterEvent.Points;
-                if (Health <= 0) Die();
-            }
+            if (attackCharacterEvent.CharacterId != Id) return;
+            Health -= attackCharacterEvent.Points;
+            if (Health <= 0) Die();
         }
 
         private void HandleHealing(HealCharacter healCharacterEvent) {
