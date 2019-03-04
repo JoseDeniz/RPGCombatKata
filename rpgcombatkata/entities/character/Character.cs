@@ -35,7 +35,7 @@ namespace rpgcombatkata.entities.character {
         
         private void HandleHealing(HealCharacter healCharacterEvent) {
             if (!IsAlive) return;
-            if (!ItsMe(healCharacterEvent) && !AreFromSameFaction(healCharacterEvent.SourceCharacter)) return;
+            if (!ItsMe(healCharacterEvent) && !IsFromSameFaction(healCharacterEvent.SourceCharacter)) return;
             Health += healCharacterEvent.Points;
             if (Health > MaxHealth) Health = MaxHealth;
         }
@@ -45,20 +45,32 @@ namespace rpgcombatkata.entities.character {
         }
 
         private void HandleAttack(AttackCharacter attackCharacterEvent) {
-            if (attackCharacterEvent.SourceCharacter.Id == Id) return;
-            if (attackCharacterEvent.TargetCharacter.Id != Id) return;
-            if (AreFromSameFaction(attackCharacterEvent.SourceCharacter)) return;
-            if (attackCharacterEvent.Range > attackCharacterEvent.SourceCharacter.AttackRange) return;
+            if (IAmTheAttacker(attackCharacterEvent.SourceCharacter)) return;
+            if (IAmNotTheAttacked(attackCharacterEvent.TargetCharacter)) return;
+            if (IsFromSameFaction(attackCharacterEvent.SourceCharacter)) return;
+            if (IAmIntoTheAttackRange(attackCharacterEvent)) return;
             Health -= CalculatePointsToDiscount(attackCharacterEvent);
             if (Health <= 0) Die();
         }
 
-        private bool AreFromSameFaction(Character attacker) {
+        private bool IAmTheAttacker(Character attacker) {
+            return attacker.Id == Id;
+        }
+        
+        private bool IAmNotTheAttacked(Character attacked) {
+            return attacked.Id != Id;
+        }
+        
+        private bool IsFromSameFaction(Character attacker) {
             return Factions.Any(attacker.IsInFaction);
         }
-
+        
         private bool IsInFaction(Faction faction) {
             return Factions.Contains(faction);
+        }
+        
+        private static bool IAmIntoTheAttackRange(AttackCharacter attackCharacterEvent) {
+            return attackCharacterEvent.Range > attackCharacterEvent.SourceCharacter.AttackRange;
         }
 
         private int CalculatePointsToDiscount(AttackCharacter attackCharacterEvent) {
