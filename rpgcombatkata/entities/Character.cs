@@ -5,12 +5,14 @@ namespace rpgcombatkata.entities {
     public class Character {
         public int Id { get; }
         public int Level { get; }
-        public int Health { get; protected set; }
-        public bool IsAlive { get; protected set; }
+        public int Health { get; private set; }
+        public bool IsAlive { get; private set; }
 
-        protected Character() {
+        private const int MaxHealth = 1000;
+
+        private Character() {
             Level = 1;
-            Health = 1000;
+            Health = MaxHealth;
             IsAlive = true;
             Id = CharacterIdGenerator.Next();
             
@@ -26,6 +28,7 @@ namespace rpgcombatkata.entities {
             if (!IsAlive) return;
             if (healCharacterEvent.CharacterId != Id) return;
             Health += healCharacterEvent.Points;
+            if (Health > MaxHealth) Health = MaxHealth;
         }
 
         private void HandleAttack(AttackCharacter attackCharacterEvent) {

@@ -47,40 +47,28 @@ namespace rpgcombatkatatests {
         }
         
         [Test]
-        public void receive_health_from_other_characters() {
+        public void receive_health_from_other_characters_not_over_1000() {
             EventBus.Raise(new HealCharacter(character.Id, points: 100));
             
-            character.Health.Should().Be(1100);
+            character.Health.Should().Be(1000);
         }
         
         [Test]
         public void receive_health_from_other_characters_only_if_has_same_id() {
+            EventBus.Raise(new AttackCharacter(character.Id, points: 100));
             EventBus.Raise(new HealCharacter(character.Id, points: 100));
             EventBus.Raise(new HealCharacter(characterId: 123, points: 100));
             
-            character.Health.Should().Be(1100);
+            character.Health.Should().Be(1000);
         }
         
         [Test]
         public void can_not_receive_health_when_is_death() {
-            var deathCharacter = GivenADeathCharacter();
+            EventBus.Raise(new AttackCharacter(character.Id, points: 1000));
+            EventBus.Raise(new HealCharacter(character.Id, points: 100));
             
-            EventBus.Raise(new HealCharacter(deathCharacter.Id, points: 100));
-            
-            deathCharacter.Health.Should().Be(0);
-            deathCharacter.IsAlive.Should().BeFalse();
-        }
-
-        private static Character GivenADeathCharacter() {
-            return new DeathCharacter();
-        }
-    }
-
-    internal class DeathCharacter : Character {
-
-        public DeathCharacter() {
-            Health = 0;
-            IsAlive = false;
+            character.Health.Should().Be(0);
+            character.IsAlive.Should().BeFalse();
         }
     }
 }
