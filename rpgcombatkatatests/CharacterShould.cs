@@ -25,11 +25,19 @@ namespace rpgcombatkatatests {
         }
 
         [Test]
-        public void receive_damage_that_reduces_its_health() {
-            EventBus.Raise(new AttackCharacter(character1, character2, points: 100));
+        public void receive_damage_that_reduces_its_health_only_in_range() {
+            EventBus.Raise(new AttackCharacter(character1, character2, points: 100, range: 1));
             
             character2.IsAlive.Should().BeTrue();
             character2.Health.Should().Be(900);
+        }
+        
+        [Test]
+        public void do_not_receive_damage_when_is_not_in_range() {
+            EventBus.Raise(new AttackCharacter(character1, character2, points: 100, range: 200));
+            
+            character2.IsAlive.Should().BeTrue();
+            character2.Health.Should().Be(1000);
         }
         
         [Test]
