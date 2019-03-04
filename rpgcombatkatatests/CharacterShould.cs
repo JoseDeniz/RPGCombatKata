@@ -25,24 +25,28 @@ namespace rpgcombatkatatests {
 
         [Test]
         public void receive_damage_that_reduces_its_health() {
-            EventBus.Raise(new AttackCharacter(character1.Id, character2.Id, points: 100));
+            EventBus.Raise(new AttackCharacter(character1, character2, points: 100));
             
             character2.IsAlive.Should().BeTrue();
             character2.Health.Should().Be(900);
         }
         
         [Test]
-        public void receive_damage_that_reduces_its_health_only_if_has_same_id() {
-            EventBus.Raise(new AttackCharacter(character1.Id,  123, points: 100));
-            EventBus.Raise(new AttackCharacter(character1.Id, character2.Id, points: 100));
+        public void if_the_target_is_5_or_more_Levels_above_the_attacker_Damage_is_reduced_by_50_percent() {
+            character2.IncreaseLevel();
+            character2.IncreaseLevel();
+            character2.IncreaseLevel();
+            character2.IncreaseLevel();
+            character2.IncreaseLevel();
+            EventBus.Raise(new AttackCharacter(character1, character2, points: 1000));
             
             character2.IsAlive.Should().BeTrue();
-            character2.Health.Should().Be(900);
+            character2.Health.Should().Be(500);
         }
 
         [Test]
         public void dies_when_the_health_becomes_0() {
-            EventBus.Raise(new AttackCharacter(character1.Id, character2.Id, points: 1000));
+            EventBus.Raise(new AttackCharacter(character1, character2, points: 1000));
             
             character2.IsAlive.Should().BeFalse();
             character2.Health.Should().Be(0);
@@ -50,7 +54,7 @@ namespace rpgcombatkatatests {
         
         [Test]
         public void can_only_receive_health_from_itself() {
-            EventBus.Raise(new AttackCharacter(character2.Id, character1.Id, points: 900));
+            EventBus.Raise(new AttackCharacter(character2, character1, points: 900));
             EventBus.Raise(new HealCharacter(character1.Id, character1.Id, points: 100));
             EventBus.Raise(new HealCharacter(character2.Id, character1.Id, points: 100));
             
@@ -66,7 +70,7 @@ namespace rpgcombatkatatests {
         
         [Test]
         public void can_not_receive_health_when_is_death() {
-            EventBus.Raise(new AttackCharacter(character1.Id, character2.Id, points: 1000));
+            EventBus.Raise(new AttackCharacter(character1, character2, points: 1000));
             EventBus.Raise(new HealCharacter(character1.Id, character2.Id, points: 100));
             
             character2.Health.Should().Be(0);
@@ -75,7 +79,7 @@ namespace rpgcombatkatatests {
 
         [Test]
         public void can_not_damage_itself() {
-            EventBus.Raise(new AttackCharacter(character1.Id, character1.Id, points: 1000));
+            EventBus.Raise(new AttackCharacter(character1, character1, points: 1000));
             
             character1.IsAlive.Should().BeTrue();
             character1.Health.Should().Be(1000);

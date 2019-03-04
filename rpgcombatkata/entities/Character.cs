@@ -4,7 +4,7 @@ using rpgcombatkata.infrastructure;
 namespace rpgcombatkata.entities {
     public class Character {
         public int Id { get; }
-        public int Level { get; }
+        public int Level { get; private set; }
         public int Health { get; private set; }
         public bool IsAlive { get; private set; }
 
@@ -32,16 +32,26 @@ namespace rpgcombatkata.entities {
         }
 
         private void HandleAttack(AttackCharacter attackCharacterEvent) {
-            if (attackCharacterEvent.SourceCharacterId == Id) return;
-            if (attackCharacterEvent.TargetCharacterId != Id) return;
-            Health -= attackCharacterEvent.Points;
+            if (attackCharacterEvent.SourceCharacter.Id == Id) return;
+            if (attackCharacterEvent.TargetCharacter.Id != Id) return;
+            Health -= CalculatePointsToDiscount(attackCharacterEvent);
             if (Health <= 0) Die();
+        }
+
+        private int CalculatePointsToDiscount(AttackCharacter attackCharacterEvent) {
+            var points = attackCharacterEvent.Points;
+            if ((Level - attackCharacterEvent.SourceCharacter.Level) >= 5) points /= 2;
+            return points;
         }
 
         private void Die() {
             IsAlive = false;
             
             EventBus.Unsubscribe<AttackCharacter>(HandleAttack);
+        }
+
+        public void IncreaseLevel() {
+            Level++;
         }
     }
     
