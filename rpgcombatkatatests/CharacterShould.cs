@@ -12,8 +12,8 @@ namespace rpgcombatkatatests {
 
         [SetUp]
         public void Setup() {
-            character1 = Character.Create();
-            character2 = Character.Create();
+            character1 = ACharacter.Create();
+            character2 = ACharacter.Create();
         }
 
         [Test]
@@ -97,6 +97,19 @@ namespace rpgcombatkatatests {
             
             character1.IsAlive.Should().BeTrue();
             character1.Health.Should().Be(1000);
+        }
+
+        private class ACharacter : Character {
+            public sealed override int AttackRange { get; protected set; }
+
+            private ACharacter() {
+                AttackRange = 1;
+            }
+
+
+            public static Character Create() {
+                return new ACharacter();
+            }
         }
     }
 }

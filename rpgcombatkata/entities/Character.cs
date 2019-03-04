@@ -2,28 +2,23 @@ using rpgcombatkata.events;
 using rpgcombatkata.infrastructure;
 
 namespace rpgcombatkata.entities {
-    public class Character {
+    public abstract class Character {
         public int Id { get; }
         public int Level { get; private set; }
         public int Health { get; private set; }
-        public int AttackRange { get; private set; }
+        public abstract int AttackRange { get; protected set; }
         public bool IsAlive { get; private set; }
 
         private const int MaxHealth = 1000;
 
-        private Character() {
+        protected Character() {
             Id = CharacterIdGenerator.Next();
             Level = 1;
             IsAlive = true;
             Health = MaxHealth;
-            AttackRange = 1;
             
             EventBus.Subscribe<HealCharacter>(HandleHealing);
             EventBus.Subscribe<AttackCharacter>(HandleAttack);
-        }
-        
-        public static Character Create() {
-            return new Character();
         }
         
         private void HandleHealing(HealCharacter healCharacterEvent) {
