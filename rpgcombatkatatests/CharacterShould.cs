@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using FluentAssertions;
 using NUnit.Framework;
 using rpgcombatkata.entities;
@@ -108,6 +109,23 @@ namespace rpgcombatkatatests {
             character1.IsAlive.Should().BeTrue();
             character1.Health.Should().Be(1000);
         }
+
+        [Test]
+        public void can_join_to_a_faction() {
+            character1.Join(new AFaction());
+            
+            character1.Factions.Should().BeEquivalentTo(new List<Faction> { new AFaction() });
+        }
+        
+        [Test]
+        public void can_leave_from_a_faction() {
+            var faction = new AFaction();
+            character1.Join(faction);
+
+            character1.Leave(faction);
+            
+            character1.Factions.Should().BeEmpty();
+        }
         
         
         private static AttackCharacter WhenAttackCharacter(Character sourceCharacter, Character targetCharacter, int points, int range = 1) {
@@ -124,6 +142,14 @@ namespace rpgcombatkatatests {
 
             public static Character Create() {
                 return new ACharacter();
+            }
+        }
+        
+        private class AFaction : Faction {
+            public override string Name { get; }
+
+            public AFaction() {
+                Name = "AFaction";
             }
         }
     }

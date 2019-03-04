@@ -9,7 +9,7 @@ namespace rpgcombatkata.entities {
         public int Health { get; private set; }
         public abstract int AttackRange { get; protected set; }
         public bool IsAlive { get; private set; }
-        public IEnumerable<Faction> Factions { get; }
+        public IList<Faction> Factions { get; }
 
         private const int MaxHealth = 1000;
 
@@ -22,6 +22,14 @@ namespace rpgcombatkata.entities {
             
             EventBus.Subscribe<HealCharacter>(HandleHealing);
             EventBus.Subscribe<AttackCharacter>(HandleAttack);
+        }
+        
+        public void Join(Faction faction) {
+            Factions.Add(faction);
+        }
+
+        public void Leave(Faction faction) {
+            Factions.Remove(faction);
         }
         
         private void HandleHealing(HealCharacter healCharacterEvent) {

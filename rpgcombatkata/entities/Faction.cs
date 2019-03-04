@@ -1,5 +1,5 @@
 namespace rpgcombatkata.entities {
     public abstract class Faction {
-        public string Name { get; }
+        public abstract string Name { get; }
     }
 }
