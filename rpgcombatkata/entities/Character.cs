@@ -14,8 +14,17 @@ namespace rpgcombatkata.entities {
             IsAlive = true;
             Id = CharacterIdGenerator.Next();
             
-            EventBus.Subscribe<AttackCharacter>(HandleAttack);
             EventBus.Subscribe<HealCharacter>(HandleHealing);
+            EventBus.Subscribe<AttackCharacter>(HandleAttack);
+        }
+        
+        public static Character Create() {
+            return new Character();
+        }
+        
+        private void HandleHealing(HealCharacter healCharacterEvent) {
+            if (healCharacterEvent.CharacterId != Id) return;
+            Health += healCharacterEvent.Points;
         }
 
         private void HandleAttack(AttackCharacter attackCharacterEvent) {
@@ -24,19 +33,10 @@ namespace rpgcombatkata.entities {
             if (Health <= 0) Die();
         }
 
-        private void HandleHealing(HealCharacter healCharacterEvent) {
-            if (healCharacterEvent.CharacterId != Id) return;
-            Health += healCharacterEvent.Points;
-        }
-
         private void Die() {
             IsAlive = false;
             
             EventBus.Unsubscribe<AttackCharacter>(HandleAttack);
-        }
-
-        public static Character Create() {
-            return new Character();
         }
     }
     
