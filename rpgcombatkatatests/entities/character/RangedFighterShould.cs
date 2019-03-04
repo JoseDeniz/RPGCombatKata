@@ -2,7 +2,7 @@ using FluentAssertions;
 using NUnit.Framework;
 using rpgcombatkata.entities.character;
 
-namespace rpgcombatkatatests {
+namespace rpgcombatkatatests.entities.character {
     [TestFixture]
     public class RangedFighterShould {
         private Character rangedFighter;

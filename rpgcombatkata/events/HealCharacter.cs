@@ -1,4 +1,4 @@
-using rpgcombatkata.entities;
+using rpgcombatkata.entities.character;
 
 namespace rpgcombatkata.events {
     public class HealCharacter {

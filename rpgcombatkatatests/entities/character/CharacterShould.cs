@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using FluentAssertions;
 using NUnit.Framework;
-using rpgcombatkata.entities;
+using rpgcombatkata.entities.character;
+using rpgcombatkata.entities.objects;
 using rpgcombatkata.events;
 using rpgcombatkata.infrastructure;
 
-namespace rpgcombatkatatests {
+namespace rpgcombatkatatests.entities.character {
     [TestFixture]
     public class CharacterShould {
         private Character character1;

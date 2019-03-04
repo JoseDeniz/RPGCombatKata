@@ -1,4 +1,4 @@
-namespace rpgcombatkata.entities {
+namespace rpgcombatkata.entities.character {
     public class RangedFighter : Character {
         public sealed override int AttackRange { get; protected set; }
 

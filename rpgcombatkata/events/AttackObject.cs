@@ -1,4 +1,5 @@
-using rpgcombatkata.entities;
+using rpgcombatkata.entities.character;
+using rpgcombatkata.entities.objects;
 
 namespace rpgcombatkata.events {
     public class AttackObject {

@@ -3,7 +3,7 @@ using System.Linq;
 using rpgcombatkata.events;
 using rpgcombatkata.infrastructure;
 
-namespace rpgcombatkata.entities {
+namespace rpgcombatkata.entities.character {
     public abstract class Character : Attackable {
         public int Id { get; }
         public int Level { get; private set; }
