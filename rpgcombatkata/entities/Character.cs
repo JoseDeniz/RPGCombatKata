@@ -5,10 +5,10 @@ namespace rpgcombatkata.entities {
     public class Character {
         public int Id { get; }
         public int Level { get; }
-        public int Health { get; private set; }
-        public bool IsAlive { get; private set; }
+        public int Health { get; protected set; }
+        public bool IsAlive { get; protected set; }
 
-        private Character() {
+        protected Character() {
             Level = 1;
             Health = 1000;
             IsAlive = true;
@@ -23,6 +23,7 @@ namespace rpgcombatkata.entities {
         }
         
         private void HandleHealing(HealCharacter healCharacterEvent) {
+            if (!IsAlive) return;
             if (healCharacterEvent.CharacterId != Id) return;
             Health += healCharacterEvent.Points;
         }

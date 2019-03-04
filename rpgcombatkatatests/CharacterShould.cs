@@ -60,5 +60,27 @@ namespace rpgcombatkatatests {
             
             character.Health.Should().Be(1100);
         }
+        
+        [Test]
+        public void can_not_receive_health_when_is_death() {
+            var deathCharacter = GivenADeathCharacter();
+            
+            EventBus.Raise(new HealCharacter(deathCharacter.Id, points: 100));
+            
+            deathCharacter.Health.Should().Be(0);
+            deathCharacter.IsAlive.Should().BeFalse();
+        }
+
+        private static Character GivenADeathCharacter() {
+            return new DeathCharacter();
+        }
+    }
+
+    internal class DeathCharacter : Character {
+
+        public DeathCharacter() {
+            Health = 0;
+            IsAlive = false;
+        }
     }
 }
