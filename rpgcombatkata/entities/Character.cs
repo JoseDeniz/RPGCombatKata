@@ -6,15 +6,17 @@ namespace rpgcombatkata.entities {
         public int Id { get; }
         public int Level { get; private set; }
         public int Health { get; private set; }
+        public int AttackRange { get; private set; }
         public bool IsAlive { get; private set; }
 
         private const int MaxHealth = 1000;
 
         private Character() {
-            Level = 1;
-            Health = MaxHealth;
-            IsAlive = true;
             Id = CharacterIdGenerator.Next();
+            Level = 1;
+            IsAlive = true;
+            Health = MaxHealth;
+            AttackRange = 1;
             
             EventBus.Subscribe<HealCharacter>(HandleHealing);
             EventBus.Subscribe<AttackCharacter>(HandleAttack);

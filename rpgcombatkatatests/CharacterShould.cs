@@ -17,10 +17,11 @@ namespace rpgcombatkatatests {
         }
 
         [Test]
-        public void be_alive_with_level_one_and_1000_points_of_health_when_is_created() {
+        public void be_alive_with_level_one_and_1000_points_of_health_and_with_an_attack_range_when_is_created() {
             character1.IsAlive.Should().BeTrue();
             character1.Level.Should().Be(1);
             character1.Health.Should().Be(1000);
+            character1.AttackRange.Should().Be(1);
         }
 
         [Test]
