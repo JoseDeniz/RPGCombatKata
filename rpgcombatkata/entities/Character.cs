@@ -15,6 +15,7 @@ namespace rpgcombatkata.entities {
             Id = CharacterIdGenerator.Next();
             
             EventBus.Subscribe<AttackCharacter>(HandleAttack);
+            EventBus.Subscribe<HealCharacter>(HandleHealing);
         }
 
         private void HandleAttack(AttackCharacter attackCharacterEvent) {
@@ -22,6 +23,10 @@ namespace rpgcombatkata.entities {
                 Health -= attackCharacterEvent.Points;
                 if (Health <= 0) Die();
             }
+        }
+
+        private void HandleHealing(HealCharacter healCharacterEvent) {
+            Health += healCharacterEvent.Points;
         }
 
         private void Die() {

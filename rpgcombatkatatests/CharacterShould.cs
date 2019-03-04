@@ -45,5 +45,12 @@ namespace rpgcombatkatatests {
             character.IsAlive.Should().BeFalse();
             character.Health.Should().Be(0);
         }
+        
+        [Test]
+        public void receive_health_from_other_characters() {
+            EventBus.Raise(new HealCharacter(characterId: character.Id, points: 100));
+            
+            character.Health.Should().Be(1100);
+        }
     }
 }
