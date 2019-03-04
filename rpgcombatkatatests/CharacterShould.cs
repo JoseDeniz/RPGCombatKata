@@ -49,19 +49,19 @@ namespace rpgcombatkatatests {
         }
         
         [Test]
-        public void receive_health_from_other_characters_not_over_1000() {
+        public void can_only_receive_health_from_itself() {
+            EventBus.Raise(new AttackCharacter(character2.Id, character1.Id, points: 900));
+            EventBus.Raise(new HealCharacter(character1.Id, character1.Id, points: 100));
             EventBus.Raise(new HealCharacter(character2.Id, character1.Id, points: 100));
             
-            character1.Health.Should().Be(1000);
+            character1.Health.Should().Be(200);
         }
         
         [Test]
-        public void receive_health_from_other_characters_only_if_has_same_id() {
-            EventBus.Raise(new AttackCharacter(character1.Id, character2.Id, points: 100));
-            EventBus.Raise(new HealCharacter(character1.Id, character2.Id, points: 100));
-            EventBus.Raise(new HealCharacter(character1.Id, 123, points: 100));
+        public void can_only_receive_health_from_itself_not_over_1000() {
+            EventBus.Raise(new HealCharacter(character1.Id, character1.Id, points: 100));
             
-            character2.Health.Should().Be(1000);
+            character1.Health.Should().Be(1000);
         }
         
         [Test]
