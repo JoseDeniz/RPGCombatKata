@@ -15,12 +15,13 @@ namespace rpgcombatkata.entities.objects {
 
         private void HandleAttack(AttackObject attackObjectEvent) {
             Health -= attackObjectEvent.Points;
-            if (Health <= 0) Die();
+            if (Health <= 0) Destroy();
         }
 
-        private void Die() {
+        private void Destroy() {
             Health = 0;
             EventBus.Raise(new DestroyedObject(Id));
+            EventBus.Unsubscribe<AttackObject>(HandleAttack);
         }
     }
 
