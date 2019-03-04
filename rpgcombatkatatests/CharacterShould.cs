@@ -126,7 +126,17 @@ namespace rpgcombatkatatests {
             
             character1.Factions.Should().BeEmpty();
         }
-        
+
+        [Test]
+        public void allies_of_a_faction_can_not_damage_each_others() {
+            var faction = new AFaction();
+            character1.Join(faction);
+            character2.Join(faction);
+            
+            EventBus.Raise(WhenAttackCharacter(character1, character2, 1000));
+
+            character2.Health.Should().Be(1000);
+        }
         
         private static AttackCharacter WhenAttackCharacter(Character sourceCharacter, Character targetCharacter, int points, int range = 1) {
             return new AttackCharacter(sourceCharacter, targetCharacter, points, range);

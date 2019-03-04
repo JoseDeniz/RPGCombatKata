@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using rpgcombatkata.events;
 using rpgcombatkata.infrastructure;
 
@@ -42,9 +43,18 @@ namespace rpgcombatkata.entities {
         private void HandleAttack(AttackCharacter attackCharacterEvent) {
             if (attackCharacterEvent.SourceCharacter.Id == Id) return;
             if (attackCharacterEvent.TargetCharacter.Id != Id) return;
+            if (AreFromSameFaction(attackCharacterEvent.SourceCharacter)) return;
             if (attackCharacterEvent.Range > attackCharacterEvent.SourceCharacter.AttackRange) return;
             Health -= CalculatePointsToDiscount(attackCharacterEvent);
             if (Health <= 0) Die();
+        }
+
+        private bool AreFromSameFaction(Character attacker) {
+            return Factions.Any(attacker.IsInFaction);
+        }
+
+        private bool IsInFaction(Faction faction) {
+            return Factions.Contains(faction);
         }
 
         private int CalculatePointsToDiscount(AttackCharacter attackCharacterEvent) {
