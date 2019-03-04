@@ -39,14 +39,14 @@ namespace rpgcombatkata.entities {
         }
 
         private int CalculatePointsToDiscount(AttackCharacter attackCharacterEvent) {
-            var points = attackCharacterEvent.Points;
-            if ((Level - attackCharacterEvent.SourceCharacter.Level) >= 5) points /= 2;
-            return points;
+            if ((Level - attackCharacterEvent.SourceCharacter.Level) >= 5) return attackCharacterEvent.Points / 2;
+            if ((attackCharacterEvent.SourceCharacter.Level - Level) >= 5) return attackCharacterEvent.Points * 2;
+            return attackCharacterEvent.Points;
         }
 
         private void Die() {
             IsAlive = false;
-            
+            Health = 0;
             EventBus.Unsubscribe<AttackCharacter>(HandleAttack);
         }
 

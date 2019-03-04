@@ -32,13 +32,26 @@ namespace rpgcombatkatatests {
         }
         
         [Test]
-        public void if_the_target_is_5_or_more_Levels_above_the_attacker_Damage_is_reduced_by_50_percent() {
+        public void if_the_target_is_five_or_more_Levels_above_the_attacker_Damage_is_reduced_by_50_percent() {
             character2.IncreaseLevel();
             character2.IncreaseLevel();
             character2.IncreaseLevel();
             character2.IncreaseLevel();
             character2.IncreaseLevel();
             EventBus.Raise(new AttackCharacter(character1, character2, points: 1000));
+            
+            character2.IsAlive.Should().BeTrue();
+            character2.Health.Should().Be(500);
+        }
+        
+        [Test]
+        public void if_the_target_is_five_or_more_Levels_below_the_attacker_Damage_is_increased_by_50_percent() {
+            character1.IncreaseLevel();
+            character1.IncreaseLevel();
+            character1.IncreaseLevel();
+            character1.IncreaseLevel();
+            character1.IncreaseLevel();
+            EventBus.Raise(new AttackCharacter(character1, character2, points: 250));
             
             character2.IsAlive.Should().BeTrue();
             character2.Health.Should().Be(500);
