@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using rpgcombatkata.events;
 using rpgcombatkata.infrastructure;
 
@@ -8,6 +9,7 @@ namespace rpgcombatkata.entities {
         public int Health { get; private set; }
         public abstract int AttackRange { get; protected set; }
         public bool IsAlive { get; private set; }
+        public IEnumerable<Faction> Factions { get; }
 
         private const int MaxHealth = 1000;
 
@@ -16,6 +18,7 @@ namespace rpgcombatkata.entities {
             Level = 1;
             IsAlive = true;
             Health = MaxHealth;
+            Factions = new List<Faction>();
             
             EventBus.Subscribe<HealCharacter>(HandleHealing);
             EventBus.Subscribe<AttackCharacter>(HandleAttack);
@@ -52,7 +55,7 @@ namespace rpgcombatkata.entities {
             Level++;
         }
     }
-    
+
     internal static class CharacterIdGenerator {
 
         private static int nextId = 1;
