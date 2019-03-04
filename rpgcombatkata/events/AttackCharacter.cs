@@ -6,12 +6,6 @@ namespace rpgcombatkata.events {
         public Character TargetCharacter { get; }
         public int Points { get; }
         public int Range { get; }
-
-        public AttackCharacter(Character sourceCharacter, Character targetCharacter, int points) {
-            SourceCharacter = sourceCharacter;
-            TargetCharacter = targetCharacter;
-            Points = points;
-        }
         
         public AttackCharacter(Character sourceCharacter, Character targetCharacter, int points, int range) {
             SourceCharacter = sourceCharacter;
