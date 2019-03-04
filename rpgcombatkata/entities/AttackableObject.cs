@@ -2,7 +2,7 @@ using rpgcombatkata.events;
 using rpgcombatkata.infrastructure;
 
 namespace rpgcombatkata.entities {
-    public abstract class AttackableObject {
+    public abstract class AttackableObject : Attackable {
         public int Id { get; }
         public abstract int Health { get; protected set; }
 
