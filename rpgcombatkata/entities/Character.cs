@@ -6,7 +6,7 @@ namespace rpgcombatkata.entities {
         public int Id { get; }
         public int Level { get; }
         public int Health { get; private set; }
-        public bool IsAlive { get; }
+        public bool IsAlive { get; private set; }
 
         private Character() {
             Level = 1;
@@ -20,7 +20,14 @@ namespace rpgcombatkata.entities {
         private void HandleAttack(AttackCharacter attackCharacterEvent) {
             if (attackCharacterEvent.CharacterId == Id) {
                 Health -= attackCharacterEvent.Points;
+                if (Health <= 0) Die();
             }
+        }
+
+        private void Die() {
+            IsAlive = false;
+            
+            EventBus.Unsubscribe<AttackCharacter>(HandleAttack);
         }
 
         public static Character Create() {

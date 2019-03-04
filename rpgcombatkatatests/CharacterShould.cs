@@ -37,5 +37,13 @@ namespace rpgcombatkatatests {
             character.IsAlive.Should().BeTrue();
             character.Health.Should().Be(900);
         }
+
+        [Test]
+        public void dies_when_the_health_becomes_0() {
+            EventBus.Raise(new AttackCharacter(character.Id, points: 1000));
+            
+            character.IsAlive.Should().BeFalse();
+            character.Health.Should().Be(0);
+        }
     }
 }
