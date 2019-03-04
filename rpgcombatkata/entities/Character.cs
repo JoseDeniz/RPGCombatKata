@@ -31,7 +31,7 @@ namespace rpgcombatkata.entities {
         private void HandleAttack(AttackCharacter attackCharacterEvent) {
             if (attackCharacterEvent.SourceCharacter.Id == Id) return;
             if (attackCharacterEvent.TargetCharacter.Id != Id) return;
-            if (attackCharacterEvent.Range > AttackRange) return;
+            if (attackCharacterEvent.Range > attackCharacterEvent.SourceCharacter.AttackRange) return;
             Health -= CalculatePointsToDiscount(attackCharacterEvent);
             if (Health <= 0) Die();
         }

@@ -26,10 +26,11 @@ namespace rpgcombatkatatests {
 
         [Test]
         public void receive_damage_that_reduces_its_health_only_in_range() {
-            EventBus.Raise(WhenAttackCharacter(character1, character2, 100));
+            var rangedFighter = RangedFighter.Create();
+            EventBus.Raise(WhenAttackCharacter(rangedFighter, character1, 100, 15));
             
-            character2.IsAlive.Should().BeTrue();
-            character2.Health.Should().Be(900);
+            character1.IsAlive.Should().BeTrue();
+            character1.Health.Should().Be(900);
         }
         
         [Test]
