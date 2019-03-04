@@ -26,13 +26,14 @@ namespace rpgcombatkata.entities {
         
         private void HandleHealing(HealCharacter healCharacterEvent) {
             if (!IsAlive) return;
-            if (healCharacterEvent.CharacterId != Id) return;
+            if (healCharacterEvent.TargetCharacterId != Id) return;
             Health += healCharacterEvent.Points;
             if (Health > MaxHealth) Health = MaxHealth;
         }
 
         private void HandleAttack(AttackCharacter attackCharacterEvent) {
-            if (attackCharacterEvent.CharacterId != Id) return;
+            if (attackCharacterEvent.SourceCharacterId == Id) return;
+            if (attackCharacterEvent.TargetCharacterId != Id) return;
             Health -= attackCharacterEvent.Points;
             if (Health <= 0) Die();
         }
