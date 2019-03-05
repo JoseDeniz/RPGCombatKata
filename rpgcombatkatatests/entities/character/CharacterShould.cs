@@ -15,6 +15,7 @@ namespace rpgcombatkatatests.entities.character {
 
         [SetUp]
         public void Setup() {
+            EventBus.Clean();
             character1 = ACharacter.Create();
             character2 = ACharacter.Create();
         }
